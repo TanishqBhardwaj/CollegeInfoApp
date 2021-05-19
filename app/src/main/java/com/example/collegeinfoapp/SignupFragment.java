@@ -1,27 +1,24 @@
 package com.example.collegeinfoapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupFragment extends Fragment {
 
     private EditText editTextEmail;
     private EditText editTextCreatePassword;
     private EditText editTextConfirmPassword;
     private Button buttonSignup;
+    private TextView textViewLogin;
 
     private String email;
     private String createPassword;
@@ -30,28 +27,26 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_signup, container, false);
         mAuth = FirebaseAuth.getInstance();
 
-        setView();
+        setView(view);
+        setClickListeners();
+        return view;
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-////        updateUI(currentUser);
-//    }
+    private void setView(View view) {
+        editTextEmail = view.findViewById(R.id.editTextTextEmailAddress);
+        editTextCreatePassword = view.findViewById(R.id.editTextCreatePassword);
+        editTextConfirmPassword = view.findViewById(R.id.editTextTextConfirmPassword);
+        buttonSignup = view.findViewById(R.id.buttonSignup);
+        textViewLogin = view.findViewById(R.id.textViewLogin);
+    }
 
-    private void setView() {
-        editTextEmail = findViewById(R.id.editTextTextEmailAddress);
-        editTextCreatePassword = findViewById(R.id.editTextCreatePassword);
-        editTextConfirmPassword = findViewById(R.id.editTextTextConfirmPassword);
-        buttonSignup = findViewById(R.id.buttonSignup);
-
+    private void setClickListeners() {
         buttonSignup.setOnClickListener(view -> {
             email = editTextEmail.getText().toString();
             createPassword = editTextCreatePassword.getText().toString().trim();
@@ -61,9 +56,15 @@ public class SignupActivity extends AppCompatActivity {
                 addUser();
             }
             else {
-                Toast.makeText(SignupActivity.this, "Passwords do not match!",
+                Toast.makeText(getContext(), "Passwords do not match!",
                         Toast.LENGTH_LONG).show();
             }
+        });
+
+        textViewLogin.setOnClickListener(view -> {
+            assert getFragmentManager() != null;
+            getFragmentManager().beginTransaction().replace(R.id.frame_layout_signup_login,
+                    new LoginFragment()).commit();
         });
     }
 
@@ -71,12 +72,11 @@ public class SignupActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, createPassword)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        Intent intent = new Intent(this, MainActivity.class);
+                        Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
-                        finish();
                     }
                     else {
-                        Toast.makeText(SignupActivity.this,
+                        Toast.makeText(getContext(),
                                 "Sign up unsuccessful!", Toast.LENGTH_LONG).show();
                     }
                 });
