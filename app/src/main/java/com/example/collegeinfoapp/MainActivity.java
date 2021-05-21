@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -65,6 +67,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.syllabus :
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main,
                         new SyllabusFragment()).commit();
+                break;
+
+            case R.id.attendance :
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main,
+                        new AttendanceFragment()).commit();
+                break;
+
+            case R.id.logout:
+                mAuth.signOut();
+                finish();
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

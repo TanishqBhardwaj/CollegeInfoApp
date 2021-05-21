@@ -7,23 +7,28 @@
 
         <item
             android:id="@+id/notice_board"
-            android:title="Notice Board"/>
+            android:title="Notice Board"
+            android:icon="@drawable/notice_board"/>
 
         <item
             android:id="@+id/time_table"
-            android:title="Time Table"/>
+            android:title="Time Table"
+            android:icon="@drawable/time_table"/>
 
         <item
             android:id="@+id/syllabus"
-            android:title="Syllabus"/>
+            android:title="Syllabus"
+            android:icon="@drawable/syllabus"/>
 
         <item
             android:id="@+id/attendance"
-            android:title="Attendance"/>
+            android:title="Attendance"
+            android:icon="@drawable/attendance"/>
 
         <item
             android:id="@+id/logout"
-            android:title="Logout"/>
+            android:title="Logout"
+            android:icon="@drawable/logout"/>
     </group>
 
 </menu>
